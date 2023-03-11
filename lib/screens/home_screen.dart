@@ -18,11 +18,13 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).primaryColorDark,
         title: const Text('Home'),
+        backgroundColor: Colors.blue,
       ),
-      drawer: SideBarMenu(),
+      drawer:  SideBarMenu(),
+      body: const Center(
+        child: Text('Home Screen'),
+      ),
     );
   }
 }

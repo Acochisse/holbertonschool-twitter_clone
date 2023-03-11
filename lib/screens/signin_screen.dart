@@ -1,15 +1,10 @@
-// 
-// Requirements for the signin screen:
-// Initiate _emailController inside the initState() method
-// Initiate _passwordController inside the initState() method
-// Dispose of _emailController inside the dispose() method
-// Dispose of _passwordController inside the dispose() method
-// The screen should be scrollable if needed
-// Make sure to use the already created custom widgets while passing the right params
-// Leave the onPressed functions empty for now
 import 'package:flutter/material.dart';
 import 'package:twitter/widgets/entry_field.dart';
 import 'package:twitter/widgets/flat_button.dart';
+import 'package:twitter/screens/forgot_password_screen.dart';
+import 'package:twitter/screens/signup_screen.dart';
+import 'package:twitter/screens/home_screen.dart';
+import 'package:twitter/providers/auth_state.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({ Key? key }) : super(key: key);
@@ -21,6 +16,37 @@ class SignIn extends StatefulWidget {
 class SignInState extends State<SignIn> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> attemptSignIn() async {
+    final String email = _emailController.text.trim();
+    final String password = _passwordController.text.trim();
+    final bool isSuccess = await Auth().attemptLogIn(email, password);
+    if (isSuccess) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Sign in failed'),
+            content: const Text('Please check your email and password.'),
+            actions: [
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -62,14 +88,36 @@ class SignInState extends State<SignIn> {
             ),
             const SizedBox(height: 20),
             CustomFlatButton(
-              label: 'Sign In',
-              onPressed: () {},
+              label: 'Submit',
+              onPressed: attemptSignIn,
             ),
             const SizedBox(height: 20),
-            CustomFlatButton(
-              label: 'Sign Up',
-              onPressed: () {},
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SignUp()),
+                );
+              },
+              child: Text('Sign up',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Colors.blue,
+                      )),
             ),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ForgetPassword()),
+                );
+              },
+              child: Text('Forget Password?',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Colors.blue,
+                      )),
+            )
           ],
         ),
       ),
