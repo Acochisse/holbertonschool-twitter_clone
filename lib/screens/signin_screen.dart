@@ -20,7 +20,7 @@ class SignInState extends State<SignIn> {
   Future<void> attemptSignIn() async {
     final String email = _emailController.text.trim();
     final String password = _passwordController.text.trim();
-    final bool isSuccess = await Auth().attemptLogIn(email, password);
+    final bool isSuccess = await Auth().attemptLogin(email, password);
     if (isSuccess) {
       Navigator.pushReplacement(
         context,

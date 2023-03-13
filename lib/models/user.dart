@@ -10,6 +10,8 @@ class User {
   int following;
   List<String> followersList;
   List<String> followingList;
+  String bio;
+  String location;
 
   User({
     required this.key,

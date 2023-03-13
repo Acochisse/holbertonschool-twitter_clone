@@ -56,7 +56,7 @@ class Auth extends ChangeNotifier {
 
   User? get user => _user;
 
-  Future<void> attemptSignUp(
+  Future attemptSignUp(
       String email, String name, String password, String passwordConfirmation) async {
     try {
       if (password != passwordConfirmation) {
@@ -124,6 +124,34 @@ class Auth extends ChangeNotifier {
     } catch (e) {
       throw Errors.error;
     }
+  }
+
+  Future attemptSignOut() async {
+    try {
+      await _auth.signOut();
+
+      _user = null;
+
+      notifyListeners();
+    } catch (e) {
+      throw Errors.error;
+    }
+  }
+
+  Future getCurrentUserModel() async {
+    final User? user = _auth.currentUser;
+    if (user == null) {
+      return;
+    }
+
+    final snapshot = await _usersRef.doc(user.uid).get();
+    if (!snapshot.exists) {
+      return;
+    }
+
+    _user = snapshot.data();
+
+    notifyListeners();
   }
 
   Future<void> signOut() async {

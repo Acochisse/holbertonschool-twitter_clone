@@ -9,7 +9,6 @@ import 'screens/home_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/notification_screen.dart';
 import 'screens/chats_screen.dart';
-import 'package:twitter/widgets/side_bar_menu.dart';
 
 void main() {
   runApp(const MyApp());

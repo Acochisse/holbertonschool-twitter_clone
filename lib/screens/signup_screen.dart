@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:twitter/widgets/entry_field.dart';
 import 'package:twitter/widgets/flat_button.dart';
+import 'package:twitter/providers/auth_state.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -69,10 +70,22 @@ class SignUpState extends State<SignUp> {
               isPassword: true,
             ),
             const SizedBox(height: 20),
-            CustomFlatButton(
+           CustomFlatButton(
               label: 'Sign Up',
-              onPressed: () {},
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  // If the form is valid, call the signUp method
+                  Auth().attemptSignUp(
+                    _nameController.text.trim(),
+                    _emailController.text.trim(),
+                    _passwordController.text.trim(),
+                    _confirmController.text.trim(),
+                  );
+                }
+              },
             ),
+
+            
             const SizedBox(height: 20),
             CustomFlatButton(
               label: 'Sign In',
